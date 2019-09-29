@@ -1,12 +1,37 @@
 const path = require('path'); // node.js의 모듈로서 파일 경로를 다룸.
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+
+const glob = require('glob');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PurifyCSSPlugin = require('purifycss-webpack');
+const inProduction = false;
+
 module.exports = {
     // https://webpack.js.org/concepts/mode/
     mode: 'development',
 
     // 시작 스크립트 파일
-    entry: path.resolve(__dirname, 'src/index.js'), // './src/index.js'와 같다.
+    //entry: path.resolve(__dirname, 'src/index.js'), // './src/index.js'와 같다.
+
+    entry: {
+        app:[
+            './src/index.js',
+            './src/App/app.css'
+        ],
+        dom:[
+            './src/dom/dom.js',
+            './src/dom/dom.css'
+        ],
+        book:[
+            './src/dom/book.js'
+        ]
+    },
+    output: {
+        path: path.resolve(__dirname, './public'), //dist
+        filename: '[name].js'
+    },
+
 
     resolve: {
         // 프로젝트의 루트디렉토리를 설정하여, 나중에 ./components 혹은 ../components 이렇게 접근해야 되는 디렉토리를 바로 components 로 접근 할 수 있게 해줍니다.
@@ -51,7 +76,9 @@ module.exports = {
                 use: [
                     {
                         loader: 'file-loader',
-                        options: {},
+                        options: {
+                            name: '[name].[ext]?[hash]'
+                        }
                     },
                 ],
             },
@@ -78,6 +105,15 @@ module.exports = {
     },
 
     plugins: [
+        new MiniCssExtractPlugin({filename:'[name].css'}),
+        new PurifyCSSPlugin({
+            paths: glob.sync(path.join(__dirname, 'public/index.html')),
+            minimize: inProduction
+        }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: inProduction
+        }),
+
         new webpack.ProvidePlugin({
             jQuery: 'jquery',
             $: 'jquery',
@@ -89,10 +125,5 @@ module.exports = {
             template: path.resolve(__dirname, 'public/index.html'), // 없으면 빈 html을 만들어 생성됨.
         })
     ],
-
-    output: {
-        path: path.resolve(__dirname, 'public'),
-        filename: 'bundle.js'
-    }
 };
 

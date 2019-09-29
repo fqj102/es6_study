@@ -18,7 +18,7 @@ console.log("li",li);
 
 items.forEach((item,index)=>{
     console.log(index,item.className,item.textContent);
-})
+});
 
 //ul.remove();
 //ul.firstElementChild.remove();

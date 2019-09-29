@@ -1,7 +1,7 @@
 class Test {
     state={
         aa:'aa'
-    }
+    };
 
     test(){
         console.log(this.state);
@@ -11,4 +11,4 @@ class Test {
     }
 }
 
-export default Test
+export default Test;
