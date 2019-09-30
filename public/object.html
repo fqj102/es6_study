@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+
+<script type="text/javascript">
+    //1.basic_literals.js
+    const book1 = {
+        title:'Book One',
+        author:'John Doe',
+        year:'2013',
+        getSumary:function(){
+           return `${this.title}`;
+        }
+    }
+    console.log(book1.getSumary());
+
+    //2.constructor
+    function Book2(title,author,year) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+    }
+    //3. proptotype
+    Book2.prototype.getSumary = function () {
+        return `${this.title}`;
+    }
+
+    const book2 = new Book2('a','b','c');
+    const book2_1 = new Book2('a','b','c');
+    console.log(book2.getSumary());
+    console.log(book2_1.getSumary());
+    console.log(book2);
+
+    //4 Inherit Prototype
+    function Magazine(title,author,year,month) {
+        Book2.call(this,title,author,year);
+        this.month = month;
+    }
+
+    Magazine.prototype = Object.create(Book2.prototype);
+
+    const mag1 = new Magazine('Mag One','John Doe','2018','Jan');
+    Magazine.prototype.constructor = Magazine;
+
+    console.log(mag1);
+
+    //Object Of Protos
+    const bookProtos = {
+        getSummary:function () {
+            return `${this.title} was written by ${this.author} in ${this.year}`
+        }
+    }
+
+    const book3 = Object.create(bookProtos);
+    book3.title= 'Book One';
+    console.log(book3.getSummary());
+    console.log(book3)
+
+    //class
+
+    class Book4 {
+        constructor(title,author,year) {
+            this.title =title ;
+            this.author = author ;
+            this.year = year;
+        }
+
+        getSummary() {
+            return `${this.title} was written by ${this.author} in ${this.year}`;
+        }
+    }
+
+    class Magazine4 extends Book4 {
+
+        constructor(title,author,year,month) {
+            super(title,author,year);
+            this.month = month;
+        }
+    }
+
+    const mag4 = new Magazine4('maga4','John4',2018,1);
+    console.log(mag4.getSummary());
+    console.log(mag4)
+
+</script>
+</body>
+</html>
